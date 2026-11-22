@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 【可修改】網頁標題：顯示在瀏覽器分頁上的名稱 -->
+  <title>林燕姿 LINYANZI | 個人介紹與願景</title>
+  <meta name="description" content="林燕姿 (LINYANZI) 的個人介紹網頁，分享我的故事、專業技能、作品集以及我所嚮往的未來目標。" />
+
+  <!-- 引入 Google Fonts：思源黑體 (Noto Sans TC)、思源宋體 (Noto Serif TC) 與 Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet" />
+
+  <!-- 引入 Tailwind CSS CDN (無需額外編譯，直接支援所有樣式) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 自訂 Tailwind 設定：定義溫暖極簡色系與字體 -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Inter"', '"Noto Sans TC"', 'sans-serif'],
+            serif: ['"Noto Serif TC"', 'serif'],
+          },
+          colors: {
+            warm: {
+              50: '#FAF8F5',   /* 溫暖米白背景 */
+              100: '#F3EFEA',  /* 柔和卡片底色 */
+              200: '#E6DFD5',  /* 細緻邊框色 */
+              300: '#D2C5B4',
+              400: '#B5A189',
+              500: '#9A8267',  /* 典雅大地主色 */
+              600: '#7D674F',
+              700: '#63513E',
+              800: '#45382B',
+              900: '#2C241B',  /* 深炭褐文字 */
+            },
+            sage: {
+              50: '#F4F7F4',
+              100: '#E3EAE3',
+              500: '#6B8A7A',  /* 鼠尾草綠點綴色 */
+              600: '#536E60',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- 僅保留極簡的滾動進場動畫與自訂捲軸輔助樣式 -->
+  <style>
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="bg-warm-50 text-warm-900 dark:bg-stone-950 dark:text-stone-100 font-sans antialiased selection:bg-warm-300 selection:text-warm-900 transition-colors duration-300 overflow-x-hidden">
+
+  <!-- =====================================================================
+       導覽列 (Navigation Bar)
+       ===================================================================== -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-warm-50/80 dark:bg-stone-950/80 backdrop-blur-md border-b border-warm-200/60 dark:border-stone-800/60">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <!-- 個人品牌 Logo / 名字 -->
+      <a href="#home" class="group flex items-center gap-2.5 focus:outline-none">
+        <span class="w-8 h-8 rounded-full bg-warm-900 dark:bg-warm-200 text-warm-50 dark:text-stone-950 flex items-center justify-center font-serif font-bold text-sm tracking-wider transition-transform duration-300 group-hover:scale-105">
+          燕
+        </span>
+        <span class="font-serif font-bold text-lg tracking-wide text-warm-900 dark:text-stone-100">
+          LINYANZI
+        </span>
+      </a>
+
+      <!-- 桌面版導覽連結 -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-warm-700 dark:text-stone-300">
+        <a href="#about" class="hover:text-warm-900 dark:hover:text-white transition-colors py-2">關於我</a>
+        <a href="#aspirations" class="hover:text-warm-900 dark:hover:text-white transition-colors py-2">嚮往與願景</a>
+        <a href="#skills" class="hover:text-warm-900 dark:hover:text-white transition-colors py-2">專長與興趣</a>
+        <a href="#projects" class="hover:text-warm-900 dark:hover:text-white transition-colors py-2">作品與經歷</a>
+        <a href="#contact" class="px-4 py-2 rounded-full bg-warm-900 text-warm-50 dark:bg-warm-200 dark:text-stone-950 hover:bg-warm-700 dark:hover:bg-white transition-all shadow-sm">
+          聯絡我
+        </a>
+      </nav>
+
+      <!-- 右側功能按鈕：深淺色模式切換 + 手機版漢堡選單 -->
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" aria-label="切換深淺色模式" class="p-2.5 rounded-full text-warm-700 dark:text-stone-300 hover:bg-warm-200/60 dark:hover:bg-stone-800 transition-colors">
+          <!-- 太陽圖示 (深色模式顯示) -->
+          <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- 月亮圖示 (淺色模式顯示) -->
+          <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- 手機版選單按鈕 -->
+        <button id="mobile-menu-btn" aria-label="開啟導覽選單" class="md:hidden p-2.5 rounded-full text-warm-800 dark:text-stone-200 hover:bg-warm-200/60 dark:hover:bg-stone-800 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-warm-50 dark:bg-stone-950 border-b border-warm-200 dark:border-stone-800 px-6 py-4 space-y-2">
+      <a href="#about" class="mobile-link block py-3 text-base font-medium text-warm-800 dark:text-stone-200 hover:text-warm-500">關於我</a>
+      <a href="#aspirations" class="mobile-link block py-3 text-base font-medium text-warm-800 dark:text-stone-200 hover:text-warm-500">嚮往與願景</a>
+      <a href="#skills" class="mobile-link block py-3 text-base font-medium text-warm-800 dark:text-stone-200 hover:text-warm-500">專長與興趣</a>
+      <a href="#projects" class="mobile-link block py-3 text-base font-medium text-warm-800 dark:text-stone-200 hover:text-warm-500">作品與經歷</a>
+      <a href="#contact" class="mobile-link block py-3 text-base font-medium text-sage-600 dark:text-sage-500 font-semibold">聯絡方式</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- =====================================================================
+         1. 首頁主視覺區 (Hero Section)
+         ===================================================================== -->
+    <section id="home" class="relative pt-32 pb-20 sm:pt-40 sm:pb-28 px-6 sm:px-8 overflow-hidden">
+      <!-- 背景柔和光暈裝飾 -->
+      <div class="absolute top-20 right-0 -z-10 w-72 h-72 sm:w-96 sm:h-96 bg-warm-200/50 dark:bg-warm-900/20 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-10 left-0 -z-10 w-64 h-64 sm:w-80 sm:h-80 bg-sage-100/60 dark:bg-sage-600/10 rounded-full blur-3xl"></div>
+
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <!-- 左側文字介紹 -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <!-- 【可修改】狀態小標籤 -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-warm-100 dark:bg-stone-900 border border-warm-200 dark:border-stone-800 text-xs sm:text-sm font-medium text-warm-700 dark:text-stone-300">
+            <span class="w-2 h-2 rounded-full bg-sage-500 animate-pulse"></span>
+            歡迎來到我的個人空間 · 持續探索與成長中
+          </div>
+
+          <!-- 姓名主標題 -->
+          <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-warm-900 dark:text-white leading-tight">
+            你好，我是 <span class="text-warm-600 dark:text-warm-300">林燕姿</span>
+            <span class="block text-xl sm:text-2xl lg:text-3xl font-sans font-light tracking-[0.2em] text-warm-500 dark:text-stone-400 mt-2">
+              LINYANZI
+            </span>
+          </h1>
+
+          <!-- 【可修改】個人標語 / 核心理念 -->
+          <p class="text-base sm:text-lg text-warm-700 dark:text-stone-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            一個熱愛生活、對世界充滿好奇的探索者。我相信透過持續學習與真誠的連結，能夠將心中的理想一步步化為現實，創造有溫度且具影響力的價值。
+          </p>
+
+          <!-- 行動呼籲按鈕 (CTA) -->
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <a href="#aspirations" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-warm-900 text-warm-50 dark:bg-warm-200 dark:text-stone-950 font-medium text-sm sm:text-base hover:bg-warm-700 dark:hover:bg-white transition-all shadow-md hover:shadow-lg text-center">
+              探索我所嚮往的未來
+            </a>
+            <a href="#about" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-transparent border border-warm-300 dark:border-stone-700 text-warm-800 dark:text-stone-200 font-medium text-sm sm:text-base hover:bg-warm-100 dark:hover:bg-stone-900 transition-all text-center">
+              進一步認識我
+            </a>
+          </div>
+        </div>
+
+        <!-- 右側個人形象卡片 -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-64 h-80 sm:w-72 sm:h-96 rounded-3xl overflow-hidden shadow-xl border-4 border-white dark:border-stone-800 bg-warm-200 dark:bg-stone-800 group">
+            <!-- 【可修改】個人照片網址：建議將您的照片命名為 profile.jpg 並與 index.html 放在同一個 GitHub 資料夾中，然後將 src 改為 "./profile.jpg" -->
+            <img
+              src="https://placehold.co/600x800/E6DFD5/45382B?text=LINYANZI%0A%E6%9E%97%E7%87%95%E5%A7%BF"
+              onerror="this.onerror=null; this.src='https://placehold.co/600x800/E6DFD5/45382B?text=LINYANZI';"
+              alt="林燕姿 LINYANZI 個人照片"
+              class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            />
+            <!-- 底部漸層銘牌 -->
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-warm-900/80 via-warm-900/40 to-transparent p-6 text-white">
+              <p class="font-serif text-lg font-medium">林燕姿</p>
+              <p class="text-xs tracking-widest uppercase text-warm-200">Personal Portfolio</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         2. 關於我 (About Me)
+         ===================================================================== -->
+    <section id="about" class="py-20 sm:py-28 px-6 sm:px-8 bg-warm-100/60 dark:bg-stone-900/50 border-y border-warm-200/60 dark:border-stone-800/60">
+      <div class="max-w-5xl mx-auto reveal">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="text-xs font-semibold tracking-[0.2em] uppercase text-warm-500 dark:text-stone-400">ABOUT ME</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-900 dark:text-white mt-2">關於林燕姿</h2>
+          <div class="w-12 h-1 bg-warm-400 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <div class="bg-white dark:bg-stone-900 rounded-3xl p-8 sm:p-12 shadow-sm border border-warm-200/70 dark:border-stone-800">
+          <!-- 【可修改】自我介紹段落：請依照您的真實背景、學經歷或個性自由修改以下文字 -->
+          <div class="space-y-5 text-warm-800 dark:text-stone-300 leading-relaxed text-base sm:text-lg">
+            <p>
+              嗨！我是<strong class="font-semibold text-warm-900 dark:text-white">林燕姿（LINYANZI）</strong>。我是一個注重細節、樂於傾聽，同時也勇於嘗試新事物的實踐者。在日常與學習的過程中，我喜歡觀察生活中的微光，並思考如何將所學的知識轉化為解決問題的能力。
+            </p>
+            <p>
+              對我而言，每一次新的挑戰都是認識自己與拓展視野的契機。無論是在團隊合作中擔任溝通協調的橋樑，或是獨自專注於專案與自我進修，我都期許自己能保持真誠、自律與開放的心態，穩健地走出屬於自己的節奏。
+            </p>
+          </div>
+
+          <!-- 【可修改】三個快速個人標籤卡片 -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 pt-8 border-t border-warm-100 dark:border-stone-800">
+            <div class="p-4 rounded-2xl bg-warm-50 dark:bg-stone-950/60">
+              <p class="text-xs text-warm-500 dark:text-stone-400 mb-1">所在地 / Location</p>
+              <p class="font-medium text-warm-900 dark:text-white">台灣 · Taiwan</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-warm-50 dark:bg-stone-950/60">
+              <p class="text-xs text-warm-500 dark:text-stone-400 mb-1">個人特質 / Traits</p>
+              <p class="font-medium text-warm-900 dark:text-white">細膩觀察 · 積極學習 · 溫暖真誠</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-warm-50 dark:bg-stone-950/60">
+              <p class="text-xs text-warm-500 dark:text-stone-400 mb-1">生活座右銘 / Motto</p>
+              <p class="font-medium text-warm-900 dark:text-white">心之所向，素履以往</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         3. 我所嚮往的未來與目標 (Aspirations & Vision) —— 您的核心重點區塊
+         ===================================================================== -->
+    <section id="aspirations" class="py-20 sm:py-28 px-6 sm:px-8">
+      <div class="max-w-6xl mx-auto reveal">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-xs font-semibold tracking-[0.2em] uppercase text-sage-600 dark:text-sage-500">ASPIRATIONS & VISION</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-900 dark:text-white mt-2">我所嚮往的未來與目標</h2>
+          <p class="text-warm-600 dark:text-stone-400 mt-4 text-sm sm:text-base">
+            描繪我心中理想的模樣——包含職涯藍圖、個人成長、理想生活型態與核心價值觀。
+          </p>
+        </div>
+
+        <!-- 四大嚮往維度卡片網格 (【可修改】各卡片內的標題與描述皆可依您的理想調整) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+
+          <!-- 嚮往 1：職涯與專業願景 -->
+          <div class="group p-8 rounded-3xl bg-white dark:bg-stone-900 border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-warm-100 dark:bg-stone-800 text-warm-700 dark:text-warm-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-3">職涯願景：創造有溫度的價值</h3>
+            <p class="text-warm-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
+              我嚮往能投入一份兼具創造力與意義的工作，在專業領域中深耕並成為值得信賴的夥伴。期許自己不僅能完成任務，更能透過敏銳的洞察力，打造出真正貼近人心、幫助他人生活更美好的成果。
+            </p>
+          </div>
+
+          <!-- 嚮往 2：個人成長與學習 -->
+          <div class="group p-8 rounded-3xl bg-white dark:bg-stone-900 border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-3">持續蛻變：保持好奇與跨界學習</h3>
+            <p class="text-warm-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
+              我不希望自己被單一框架限制，因此嚮往成為一個「終身學習者」。未來希望能持續精進數位工具、外語溝通與美學素養，勇敢跨出舒適圈，在每一次嘗試中累積更從容的底氣。
+            </p>
+          </div>
+
+          <!-- 嚮往 3：理想生活型態 -->
+          <div class="group p-8 rounded-3xl bg-white dark:bg-stone-900 border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-warm-100 dark:bg-stone-800 text-warm-700 dark:text-warm-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-3">理想生活：工作與心靈的平衡</h3>
+            <p class="text-warm-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
+              我所嚮往的生活，是在忙碌與靜謐之間找到恰到好處的平衡。工作時全心投入、追求卓越；閒暇時能陪伴家人朋友、閱讀一本好書、走訪不同城市與自然風景，享受簡單卻豐盈的日常。
+            </p>
+          </div>
+
+          <!-- 嚮往 4：核心價值與影響力 -->
+          <div class="group p-8 rounded-3xl bg-white dark:bg-stone-900 border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-3">核心價值：溫柔而堅定的力量</h3>
+            <p class="text-warm-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
+              我相信「善良」與「真誠」是最長遠的競爭力。我希望自己能成為一個帶給周遭人安心感與正能量的人，在實現自我理想的同時，也能回饋社會，成為他人生命中的一道微光。
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         4. 專長與興趣 (Skills & Interests)
+         ===================================================================== -->
+    <section id="skills" class="py-20 sm:py-28 px-6 sm:px-8 bg-warm-100/60 dark:bg-stone-900/50 border-y border-warm-200/60 dark:border-stone-800/60">
+      <div class="max-w-5xl mx-auto reveal">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="text-xs font-semibold tracking-[0.2em] uppercase text-warm-500 dark:text-stone-400">SKILLS & INTERESTS</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-900 dark:text-white mt-2">專長與生活興趣</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- 左側：專業能力與工具 (【可修改】可替換為您擅長的軟體、語言或領域) -->
+          <div class="bg-white dark:bg-stone-900 p-8 rounded-3xl border border-warm-200/70 dark:border-stone-800">
+            <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-6 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-warm-500"></span>
+              專業技能與工具
+            </h3>
+            <div class="flex flex-wrap gap-2.5">
+              <span class="px-4 py-2 rounded-full bg-warm-50 dark:bg-stone-800 text-warm-800 dark:text-stone-200 text-sm font-medium border border-warm-200/80 dark:border-stone-700">企劃與專案管理</span>
+              <span class="px-4 py-2 rounded-full bg-warm-50 dark:bg-stone-800 text-warm-800 dark:text-stone-200 text-sm font-medium border border-warm-200/80 dark:border-stone-700">跨團隊溝通協調</span>
+              <span class="px-4 py-2 rounded-full bg-warm-50 dark:bg-stone-800 text-warm-800 dark:text-stone-200 text-sm font-medium border border-warm-200/80 dark:border-stone-700">HTML / CSS 網頁基礎</span>
+              <span class="px-4 py-2 rounded-full bg-warm-50 dark:bg-stone-800 text-warm-800 dark:text-stone-200 text-sm font-medium border border-warm-200/80 dark:border-stone-700">GitHub 版本管理</span>
+              <span class="px-4 py-2 rounded-full bg-warm-50 dark:bg-stone-800 text-warm-800 dark:text-stone-200 text-sm font-medium border border-warm-200/80 dark:border-stone-700">簡報設計與視覺表達</span>
+              <span class="px-4 py-2 rounded-full bg-warm-50 dark:bg-stone-800 text-warm-800 dark:text-stone-200 text-sm font-medium border border-warm-200/80 dark:border-stone-700">資料整理與分析</span>
+            </div>
+          </div>
+
+          <!-- 右側：日常興趣與靈感來源 (【可修改】可替換為您的嗜好) -->
+          <div class="bg-white dark:bg-stone-900 p-8 rounded-3xl border border-warm-200/70 dark:border-stone-800">
+            <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-6 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-sage-500"></span>
+              日常興趣與靈感
+            </h3>
+            <div class="flex flex-wrap gap-2.5">
+              <span class="px-4 py-2 rounded-full bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-400 text-sm font-medium border border-sage-100 dark:border-stone-700">閱讀與文字寫作</span>
+              <span class="px-4 py-2 rounded-full bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-400 text-sm font-medium border border-sage-100 dark:border-stone-700">咖啡廳探索</span>
+              <span class="px-4 py-2 rounded-full bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-400 text-sm font-medium border border-sage-100 dark:border-stone-700">風景與生活攝影</span>
+              <span class="px-4 py-2 rounded-full bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-400 text-sm font-medium border border-sage-100 dark:border-stone-700">城市散步與旅行</span>
+              <span class="px-4 py-2 rounded-full bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-400 text-sm font-medium border border-sage-100 dark:border-stone-700">音樂聆聽</span>
+              <span class="px-4 py-2 rounded-full bg-sage-50 dark:bg-stone-800 text-sage-600 dark:text-sage-400 text-sm font-medium border border-sage-100 dark:border-stone-700">美學設計觀察</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         5. 精選作品與經歷 (Projects & Portfolio)
+         ===================================================================== -->
+    <section id="projects" class="py-20 sm:py-28 px-6 sm:px-8">
+      <div class="max-w-6xl mx-auto reveal">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-xs font-semibold tracking-[0.2em] uppercase text-warm-500 dark:text-stone-400">PORTFOLIO & JOURNEY</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-900 dark:text-white mt-2">精選作品與成長經歷</h2>
+          <p class="text-warm-600 dark:text-stone-400 mt-4 text-sm sm:text-base">
+            記錄我在學習、專案實作與自我探索過程中的足跡。
+          </p>
+        </div>
+
+        <!-- 三欄作品卡片 (【可修改】請替換為您真實做過的專案、報告或社團經歷) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          <!-- 作品卡片 1 -->
+          <article class="group bg-white dark:bg-stone-900 rounded-3xl overflow-hidden border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
+            <div class="aspect-video bg-warm-200 dark:bg-stone-800 overflow-hidden">
+              <img
+                src="https://placehold.co/600x400/EAE3D9/45382B?text=Personal+Website"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/EAE3D9/45382B?text=Project+01';"
+                alt="個人品牌網頁專案"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 text-xs font-medium text-warm-500 dark:text-stone-400 mb-2">
+                  <span>網頁設計</span>
+                  <span>·</span>
+                  <span>GitHub Pages</span>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-2">個人品牌與願景網站</h3>
+                <p class="text-sm text-warm-700 dark:text-stone-300 leading-relaxed mb-4">
+                  運用現代響應式網頁技術建置的個人空間，整合自我介紹、未來目標與作品展示，並部署於 GitHub Pages。
+                </p>
+              </div>
+              <a href="#home" class="inline-flex items-center gap-1.5 text-sm font-medium text-warm-800 dark:text-warm-300 hover:text-warm-500 transition-colors">
+                查看詳情
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- 作品卡片 2 -->
+          <article class="group bg-white dark:bg-stone-900 rounded-3xl overflow-hidden border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
+            <div class="aspect-video bg-sage-100 dark:bg-stone-800 overflow-hidden">
+              <img
+                src="https://placehold.co/600x400/DDE5DD/3B4D43?text=Project+Planning"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/DDE5DD/3B4D43?text=Project+02';"
+                alt="團隊專題企劃"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 text-xs font-medium text-sage-600 dark:text-sage-400 mb-2">
+                  <span>專案企劃</span>
+                  <span>·</span>
+                  <span>團隊協作</span>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-2">創新服務提案與執行</h3>
+                <p class="text-sm text-warm-700 dark:text-stone-300 leading-relaxed mb-4">
+                  主導需求訪談與流程規劃，將抽象的想法轉化為具體可行的方案，培養跨領域溝通與問題解決能力。
+                </p>
+              </div>
+              <a href="#contact" class="inline-flex items-center gap-1.5 text-sm font-medium text-warm-800 dark:text-warm-300 hover:text-warm-500 transition-colors">
+                歡迎交流討論
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- 作品卡片 3 -->
+          <article class="group bg-white dark:bg-stone-900 rounded-3xl overflow-hidden border border-warm-200/80 dark:border-stone-800 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
+            <div class="aspect-video bg-warm-200 dark:bg-stone-800 overflow-hidden">
+              <img
+                src="https://placehold.co/600x400/E6DFD5/45382B?text=Creative+Notes"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/E6DFD5/45382B?text=Project+03';"
+                alt="學習筆記與隨筆"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 text-xs font-medium text-warm-500 dark:text-stone-400 mb-2">
+                  <span>知識整理</span>
+                  <span>·</span>
+                  <span>文字創作</span>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-warm-900 dark:text-white mb-2">生活觀察與學習札記</h3>
+                <p class="text-sm text-warm-700 dark:text-stone-300 leading-relaxed mb-4">
+                  定期撰寫讀書心得與日常思考，透過系統化的文字整理沉澱思緒，並與同好分享彼此的成長故事。
+                </p>
+              </div>
+              <a href="#contact" class="inline-flex items-center gap-1.5 text-sm font-medium text-warm-800 dark:text-warm-300 hover:text-warm-500 transition-colors">
+                閱讀更多故事
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         6. 聯絡方式與社群連結 (Contact & Social Links)
+         ===================================================================== -->
+    <section id="contact" class="py-20 sm:py-28 px-6 sm:px-8 bg-warm-900 text-warm-50 dark:bg-stone-900">
+      <div class="max-w-4xl mx-auto text-center reveal">
+        <span class="text-xs font-semibold tracking-[0.2em] uppercase text-warm-300">GET IN TOUCH</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-2">與我聯繫</h2>
+        <p class="text-warm-200/90 mt-4 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+          無論是合作機會、學習交流，或是單純想聊聊彼此嚮往的未來，都非常歡迎透過以下方式與我聯絡！
+        </p>
+
+        <!-- 社群與聯絡按鈕列 (【可修改】請將 href 替換為您的真實 GitHub、Email 與社群網址) -->
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+
+          <!-- GitHub 連結 -->
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-warm-900 font-medium text-sm sm:text-base hover:bg-warm-200 transition-all shadow-md">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            GitHub
+          </a>
+
+          <!-- 一鍵複製 Email 按鈕 (【可修改】請在下方 data-email 屬性填入您的真實信箱) -->
+          <button id="copy-email-btn" data-email="linyanzi@example.com" class="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-warm-800 hover:bg-warm-700 text-warm-50 border border-warm-700 font-medium text-sm sm:text-base transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span id="email-btn-text">複製 Email 信箱</span>
+          </button>
+
+          <!-- Instagram / LinkedIn 連結 (【可修改】請替換為您的社群連結) -->
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-warm-800 hover:bg-warm-700 text-warm-50 border border-warm-700 font-medium text-sm sm:text-base transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5" stroke-width="1.8"></rect>
+              <path stroke-width="1.8" d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2" stroke-linecap="round"></line>
+            </svg>
+            Instagram
+          </a>
+
+        </div>
+
+        <!-- 複製成功提示訊息框 (取代 alert) -->
+        <div id="toast-msg" class="mt-6 inline-block px-4 py-2 rounded-full bg-sage-600 text-white text-xs sm:text-sm opacity-0 transition-opacity duration-300 pointer-events-none">
+          已成功複製信箱至剪貼簿！
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       頁尾版權宣告 (Footer)
+       ===================================================================== -->
+  <footer class="py-8 px-6 text-center text-xs sm:text-sm text-warm-500 dark:text-stone-400 bg-warm-950 text-warm-300/80 border-t border-warm-800/60">
+    <p>&copy; <span id="current-year"></span> 林燕姿 LINYANZI. All Rights Reserved.</p>
+    <p class="mt-1 text-xs text-warm-400/60">Designed with warmth & hosted on GitHub Pages.</p>
+  </footer>
+
+  <!-- =====================================================================
+       JavaScript 互動腳本
+       ===================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. 自動更新頁尾年份
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+
+      // 2. 深淺色模式切換功能
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+      const htmlEl = document.documentElement;
+
+      function updateThemeIcons(isDark) {
+        if (isDark) {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        }
+      }
+
+      // 檢查使用者先前的偏好設定
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        htmlEl.classList.add('dark');
+        updateThemeIcons(true);
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = htmlEl.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcons(isDark);
+      });
+
+      // 3. 手機版漢堡選單開關
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+
+      // 4. 一鍵複製 Email 功能 (使用兼容性最佳的 execCommand，並顯示優雅提示)
+      const copyEmailBtn = document.getElementById('copy-email-btn');
+      const toastMsg = document.getElementById('toast-msg');
+
+      copyEmailBtn.addEventListener('click', () => {
+        const email = copyEmailBtn.getAttribute('data-email');
+        const tempInput = document.createElement('input');
+        tempInput.value = email;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        toastMsg.textContent = `已複製信箱：${email}`;
+        toastMsg.classList.remove('opacity-0');
+        setTimeout(() => {
+          toastMsg.classList.add('opacity-0');
+        }, 3000);
+      });
+
+      // 5. 頁面滾動進場動畫 (Intersection Observer)
+      const revealElements = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealElements.forEach(el => revealObserver.observe(el));
+    });
+  </script>
+</body>
+</html>
